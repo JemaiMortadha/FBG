@@ -1,5 +1,3 @@
----
-
 # 📚 Système de Feedback sur des Produits Numériques [GraphQL]
 
 > Un service web basé sur **GraphQL** pour collecter et gérer les avis utilisateurs sur des produits numériques.
