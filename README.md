@@ -24,9 +24,8 @@ product-feedback-api/
 ├── app.py                # Point d'entrée de l'application Flask
 ├── models.py             # Définition des modèles SQLAlchemy
 ├── database.db           # Base de données SQLite (générée automatiquement)
-├── README.md             # Ce fichier
-└── examples/
-    └── sample_requests.sh  # Exemples de requêtes cURL
+└── README.md             # Ce fichier
+
 ```
 
 ## 🛠️ Fonctionnalités (Endpoints)
