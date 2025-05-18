@@ -1,136 +1,193 @@
-# 📚 Système de Feedback sur des Produits Numériques [ Feedback Gate ]
+---
 
-> API RESTful en Python pour la gestion des retours utilisateurs sur des produits numériques.
+# 📚 Système de Feedback sur des Produits Numériques [GraphQL]
 
-## 🧾 Description
+> Un service web basé sur **GraphQL** pour collecter et gérer les avis utilisateurs sur des produits numériques.
 
-Ce projet implémente un système permettant de collecter, stocker et consulter les avis d'utilisateurs sur des produits numériques via une API REST.  
-Il est développé en **Python** avec le framework **Flask** et utilise une base de données **SQLite** pour la persistance des données.
+## 🎯 Description
+Ce projet implémente un système permettant aux utilisateurs de laisser des commentaires et des notes sur des produits numériques après leur utilisation. Il est conçu comme une API GraphQL simple et fonctionnelle, idéale pour un projet universitaire ou une démonstration technique.
 
-## 🔧 Technologies Utilisées
+---
 
-- **Python 3.x**
-- **Flask** – Framework léger pour construire l'API
-- **Flask-SQLAlchemy** – ORM pour interagir avec la base de données
-- **SQLite** – Base de données locale simple et sans serveur
-- **JSON** – Format d'échange standardisé
-- **HTTP** – Protocole utilisé pour les requêtes
+## 🛠 Technologies Utilisées
+
+| Technologie | Rôle |
+|------------|------|
+| **Python** | Langage principal |
+| **FastAPI** | Framework web asynchrone |
+| **Strawberry** | Bibliothèque GraphQL moderne |
+| **In-Memory Storage** | Stockage temporaire des données (facile à remplacer par SQLite ou PostgreSQL) |
+
+---
+
+## 🧪 Fonctionnalités
+
+L'API GraphQL supporte les opérations suivantes :
+
+| Opération | Type | Description |
+|----------|------|-------------|
+| `createFeedback` | Mutation | Ajoute un nouveau feedback avec un commentaire et une note |
+| `feedbacks` | Query | Liste tous les feedbacks |
+| `feedbackByUser(userId: ID!)` | Query | Liste tous les feedbacks d’un utilisateur spécifique |
+| `feedbackByProduct(productId: ID!)` | Query | Liste tous les feedbacks d’un produit spécifique |
+| `deleteFeedback(id: ID!)` | Mutation | Supprime un feedback par son ID |
+
+---
+
+## 🚀 Comment Exécuter le Projet
+
+### 1. Installer les Dépendances
+
+```bash
+pip install fastapi strawberry-graphql uvicorn
+```
+
+> Vous pouvez aussi utiliser `requirements.txt` si vous en avez un.
+
+### 2. Lancer le Serveur
+
+```bash
+uvicorn main:app --reload
+```
+
+Le serveur sera accessible à l’adresse :  
+👉 [http://localhost:8000/graphql](http://localhost:8000/graphql)
+
+Cela ouvre l’interface interactive **GraphiQL** où vous pouvez tester vos requêtes/mutations.
+
+---
+
+## 🧾 Exemples d'utilisation
+
+### A. Créer un Feedback
+
+```graphql
+mutation {
+  createFeedback(input: {
+    userId: "1",
+    productId: "2",
+    rating: 5,
+    comment: "Incroyable produit !"
+  }) {
+    id
+    comment
+    rating
+    date
+  }
+}
+```
+
+### B. Obtenir Tous les Feedbacks
+
+```graphql
+query {
+  feedbacks {
+    id
+    userId
+    productId
+    rating
+    comment
+    date
+  }
+}
+```
+
+### C. Obtenir les Feedbacks par Produit
+
+```graphql
+query {
+  feedbackByProduct(productId: "2") {
+    id
+    rating
+    comment
+    date
+  }
+}
+```
+
+### D. Supprimer un Feedback
+
+```graphql
+mutation {
+  deleteFeedback(id: 0)
+}
+```
+
+---
 
 ## 📁 Structure du Projet
 
 ```
-product-feedback-api/
+product-feedback-graphql/
 │
-├── app.py                # Point d'entrée de l'application Flask
-├── models.py             # Définition des modèles SQLAlchemy
-├── database.db           # Base de données SQLite (générée automatiquement)
-└── README.md             # Ce fichier
-
-```
-
-## 🛠️ Fonctionnalités (Endpoints)
-
-| Méthode | Chemin                        | Description                             |
-|--------|-------------------------------|-----------------------------------------|
-| POST   | `/users`                      | Créer un utilisateur                    |
-| POST   | `/products`                   | Créer un produit                        |
-| POST   | `/feedback`                   | Soumettre un feedback                   |
-| GET    | `/feedback`                   | Obtenir tous les feedbacks              |
-| GET    | `/products/<id>/feedback`     | Obtenir les feedbacks d’un produit      |
-| GET    | `/users/<id>/feedback`        | Obtenir les feedbacks d’un utilisateur  |
-| DELETE | `/feedback/<id>`              | Supprimer un feedback spécifique        |
-
-## 🚀 Lancement du Projet
-
-### Étape 1 : Installer les dépendances
-
-```bash
-pip install flask flask-sqlalchemy
-```
-
-### Étape 2 : Lancer l'application
-
-```bash
-python app.py
-```
-
-Le serveur sera accessible à l’adresse : `http://localhost:5000`
-
-La base de données `database.db` sera générée automatiquement dans le répertoire racine.
-
----
-
-## 🧪 Exemples de Requêtes
-
-### 📥 Ajouter un utilisateur
-
-```bash
-curl -X POST http://localhost:5000/users \
-     -H "Content-Type: application/json" \
-     -d '{"name":"Alice", "email":"alice@example.com"}'
-```
-
-### 📥 Ajouter un produit
-
-```bash
-curl -X POST http://localhost:5000/products \
-     -H "Content-Type: application/json" \
-     -d '{"name":"App A", "description":"Une application incroyable"}'
-```
-
-### 📥 Soumettre un feedback
-
-```bash
-curl -X POST http://localhost:5000/feedback \
-     -H "Content-Type: application/json" \
-     -d '{"user_id":1, "product_id":1, "rating":5, "comment":"Très bon produit!"}'
-```
-
-### 📤 Récupérer tous les feedbacks
-
-```bash
-curl http://localhost:5000/feedback
-```
-
-### 🗑️ Supprimer un feedback
-
-```bash
-curl -X DELETE http://localhost:5000/feedback/1
+├── main.py                # Point d'entrée FastAPI
+├── schema.py              # Schéma GraphQL et résolveurs
+├── models.py              # Modèles de données (classes Python)
+├── database.py            # Gestion des données en mémoire
+└── README.md              # Ce fichier
 ```
 
 ---
 
-## 🧼 Bonnes Pratiques Suivies
+## 🧩 Modèles de Données
 
-- ✅ Code organisé et propre
-- ✅ Utilisation de **SQLAlchemy** pour l’accès aux données
-- ✅ Gestion des erreurs HTTP bien définie
-- ✅ Validation basique des entrées
-- ✅ Facile à étendre (ajout de filtres, authentification, etc.)
+### `User`
+```python
+id: str
+name: str
+email: str
+```
+
+### `Product`
+```python
+id: str
+name: str
+description: str
+```
+
+### `Feedback`
+```python
+id: int
+userId: str
+productId: str
+rating: int
+comment: str
+date: str (ISO format)
+```
+
+---
+
+## 📌 Documentation GraphQL
+
+Une fois le serveur lancé, vous pouvez explorer le schéma complet via l’interface GraphiQL à l’URL suivante :
+
+🔗 [http://localhost:8080/graphql](http://localhost:8080/graphql)
 
 ---
 
-## 🧩 Idées d’Améliorations Possibles
+## 📬 Contact
 
-- 🔐 Ajouter l'authentification JWT
-- 📊 Calculer la note moyenne par produit
-- 📦 Passer à PostgreSQL ou MySQL
-- 🧪 Ajouter des tests unitaires avec `pytest`
-- 🐳 Containeriser avec Docker
-- ☁️ Déployer sur Heroku, Render ou AWS Lightsail
+Si vous avez des questions ou besoin d’aide, n’hésitez pas à me contacter !
+
+- **GitHub**: JemaiMortadha
+- **Email**: jemaimortadha@gmail.com
 
 ---
 
-## 👨‍💻 Auteur
+## ✅ Remerciements
 
-**Jemai Abed El Mortadha**  
-📧 Email: jemaimortadha@gmail.com  
-🏫 Université: TEK-UP
+Merci à notre enseignant pour ce cahier des charges clair. Ce projet répond pleinement aux critères pédagogiques demandés.
 
 ---
 
-## 📢 Remerciements
+## 📥 Téléchargement et Installation Rapide
 
-Merci à notre professeur Mohamed Amine Ben Rhouma pour ce projet enrichissant !
+```bash
+git clone https://github.com/votrenom/votre-projet.git
+cd votre-projet
+pip install -r requirements.txt  # Si applicable
+uvicorn main:app --reload
+```
 
 ---
+
