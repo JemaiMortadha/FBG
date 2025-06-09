@@ -181,7 +181,7 @@ Merci à notre enseignant pour ce cahier des charges clair. Ce projet répond pl
 ## 📥 Téléchargement et Installation Rapide
 
 ```bash
-git clone https://github.com/votrenom/votre-projet.git
+git clone https://github.com/JemaiMortadha/FBG.git
 cd votre-projet
 pip install -r requirements.txt  # Si applicable
 uvicorn main:app --reload
